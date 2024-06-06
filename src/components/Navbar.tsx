@@ -36,10 +36,10 @@ export default Navbar;
 
 const NavContainer = styled.nav`
   padding: 2rem;
-  border: 1px solid red;
-  width: 16.25rem;
+  width: 17rem;
   height: 100%;
   min-height: 100vh;
+  background-color: var(--card);
 `;
 
 const Li = styled.li``;

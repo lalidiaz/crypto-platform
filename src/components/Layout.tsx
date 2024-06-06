@@ -6,10 +6,12 @@ const Layout = () => {
   return (
     <Main>
       <Navbar />
-      <Content>
+      <Wrapper>
         <Header />
-        <Outlet />
-      </Content>
+        <Content>
+          <Outlet />
+        </Content>
+      </Wrapper>
     </Main>
   );
 };
@@ -20,7 +22,11 @@ const Main = styled.main`
   display: flex;
 `;
 
+const Wrapper = styled.div``;
+
 const Content = styled.div`
   width: 100%;
-  padding: 2rem;
+  height: 100vh;
+  overflow-y: scroll;
+  padding: 2rem 0rem;
 `;

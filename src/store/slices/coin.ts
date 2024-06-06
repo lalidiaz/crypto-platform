@@ -7,12 +7,20 @@ interface CoinState {
   coin: ICoinDetails;
   loading: boolean;
   error: string | null;
+  currency: {
+    format: string;
+    currency: string;
+  };
 }
 
 const CurrencyInitialState = {
   aed: "",
   usd: "",
   ars: "",
+  currency: {
+    format: "en-US",
+    currency: "usd",
+  },
 };
 
 const initialState: CoinState = {
@@ -61,17 +69,24 @@ const initialState: CoinState = {
       market_cap_change_24h_in_currency: CurrencyInitialState,
       market_cap_change_percentage_24h_in_currency: CurrencyInitialState,
     },
-
     last_updated: "",
   },
   loading: false,
   error: null,
+  currency: {
+    format: "en-US",
+    currency: "usd",
+  },
 };
 
 export const coinsSlice = createSlice({
   name: "coin",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrency: (state, action) => {
+      state.currency = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCoinDetails.pending, (state) => {
@@ -171,8 +186,6 @@ export const coinsSlice = createSlice({
 
 export const coinSelector = (state: RootState) => state.coin;
 
-export default coinsSlice.reducer;
-
 export const fetchCoinDetails = createAsyncThunk<
   ICoinDetails,
   { id: string },
@@ -195,3 +208,7 @@ export const fetchCoinDetails = createAsyncThunk<
     return thunkAPI.rejectWithValue("Failed to fetch coins.");
   }
 });
+
+export const { setCurrency } = coinsSlice.actions;
+
+export default coinsSlice.reducer;

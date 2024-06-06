@@ -4,7 +4,6 @@ import avatar from "../assets/Betty.svg";
 const Header = () => {
   const currDate: Date = new Date();
   const dateStr = currDate.toDateString();
-  console.log(dateStr);
 
   return (
     <HeaderContainer>
@@ -26,9 +25,16 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0rem 2rem;
 `;
 
-const RightContainer = styled.div``;
+const RightContainer = styled.div`
+  width: 100%;
+
+  @media only screen and (min-width: 992px) {
+    width: 50%;
+  }
+`;
 
 const Title = styled.h1``;
 
@@ -36,10 +42,18 @@ const Today = styled.p`
   color: va(--gray-light-2);
   font-style: italic;
   font-weight: lighter;
+  font-size: var(--font-small);
 `;
 
 const LeftContainer = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  @media only screen and (min-width: 992px) {
+    width: 10%;
+  }
 `;
 
 const Avatar = styled.img`
@@ -48,3 +62,8 @@ const Avatar = styled.img`
 `;
 
 const UserName = styled.p``;
+
+const Profile = styled.div`
+  display: flex;
+  align-items: cetner;
+`;

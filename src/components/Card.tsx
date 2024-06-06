@@ -5,15 +5,23 @@ import { formatCurrency } from "../utils/helpers";
 interface ICard {
   key: string;
   coin: ICoin;
+  currency: {
+    currency: string;
+    format: string;
+  };
 }
-const Card = ({ coin }: ICard) => {
+
+const Card = ({ coin, currency }: ICard) => {
   const { name, symbol, image, current_price } = coin;
+
   return (
     <CardContainer>
       <Img src={image} alt={`${name}-logo`} />
       <Name>{name}</Name>
       <Symbol>{symbol.toUpperCase()}</Symbol>
-      <CurrentPrice>{formatCurrency(current_price)}</CurrentPrice>
+      <CurrentPrice>
+        {formatCurrency(currency, current_price[currency.currency])}
+      </CurrentPrice>
     </CardContainer>
   );
 };

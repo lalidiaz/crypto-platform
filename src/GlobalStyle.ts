@@ -7,6 +7,8 @@ export const GlobalStyle = createGlobalStyle`
   --work-sans: "Work Sans", sans-serif;
   --raleway: "Raleway", sans-serif;
 
+  --font-small: 0.8rem;
+
 
 /* Color */
   --background: #1E1E1E;
@@ -15,6 +17,7 @@ export const GlobalStyle = createGlobalStyle`
   --card: #212325;
   --gray-light-1: #E1E1E1;
   --gray-light-2:#909093;
+  --red: #ff1a1a;
 
 
   --radius: 3rem;

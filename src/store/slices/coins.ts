@@ -7,19 +7,32 @@ interface CoinsState {
   coins: ICoin[];
   loading: boolean;
   error: string | null;
+  page: number;
+  totalPages: number;
 }
-//  status: "idle" || "loading" || "succeeded" || "failed",
 
 const initialState: CoinsState = {
   coins: [],
   loading: false,
   error: null,
+  page: 1,
+  totalPages: 10,
 };
 
 export const coinsSlice = createSlice({
   name: "coins",
   initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+    setNextPage: (state) => {
+      state.page = state.page + 1;
+    },
+    setPrevPage: (state) => {
+      state.page = state.page + 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCoins.pending, (state) => {
@@ -37,8 +50,6 @@ export const coinsSlice = createSlice({
   },
 });
 
-// export const { fetchCoins } = coinsSlice.actions;
-
 export const coinsSelector = (state: RootState) => state.coins;
 
 // export const allCoins = (state: { coins: ICoin[] }) => state.coins;
@@ -46,29 +57,31 @@ export const coinsSelector = (state: RootState) => state.coins;
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value
 
-export default coinsSlice.reducer;
-
 export const fetchCoins = createAsyncThunk<
   ICoin[],
-  void,
+  { page: number },
   { rejectValue: string }
->("coins/fetchCoins", async (_, thunkAPI) => {
+>("coins/fetchCoins", async ({ page }, thunkAPI) => {
   try {
     const request = {
       method: "GET",
       url: `${import.meta.env.VITE_API_URL}/coins/markets`,
-      params: { vs_currency: "usd", per_page: "50" },
+      params: { vs_currency: "usd", page: page, per_page: 5 },
       headers: {
         accept: "application/json",
         "x-cg-demo-api-key": import.meta.env.VITE_API_KEY,
       },
     };
-    const response = await axios(request);
 
-    console.log("response.data --->", response.data);
+    const response = await axios(request);
+    console.log("response", response);
 
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue("Failed to fetch coins.");
   }
 });
+
+export const { setPage, setNextPage, setPrevPage } = coinsSlice.actions;
+
+export default coinsSlice.reducer;

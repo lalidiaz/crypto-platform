@@ -60,52 +60,52 @@ interface IConverted {
 //   target_coin_id: string;
 // }
 
+export interface IMarketData {
+  current_price: ICurrencyValues;
+  ath: IConverted;
+  ath_change_percentage: ICurrencyValues;
+  ath_date: ICurrencyValues;
+  atl: ICurrencyValues;
+  atl_change_percentage: ICurrencyValues;
+  atl_date: ICurrencyValues;
+  market_cap: ICurrencyValues;
+  total_volume: ICurrencyValues;
+  high_24h: ICurrencyValues;
+  low_24h: ICurrencyValues;
+  price_change_24h: number | null;
+  price_change_percentage_24h: number | null;
+  price_change_percentage_7d: number | null;
+  price_change_percentage_14d: number | null;
+  price_change_percentage_30d: number | null;
+  price_change_percentage_60d: number | null;
+  price_change_percentage_200d: number | null;
+  price_change_percentage_1y: number | null;
+  market_cap_change_24h: number | null;
+  market_cap_change_percentage_24h: number | null;
+  price_change_24h_in_currency: ICurrencyValues;
+  price_change_percentage_1h_in_currency: ICurrencyValues;
+  price_change_percentage_24h_in_currency: ICurrencyValues;
+  price_change_percentage_7d_in_currency: ICurrencyValues;
+  price_change_percentage_14d_in_currency: ICurrencyValues;
+  price_change_percentage_30d_in_currency: ICurrencyValues;
+  price_change_percentage_60d_in_currency: ICurrencyValues;
+  price_change_percentage_200d_in_currency: ICurrencyValues;
+  price_change_percentage_1y_in_currency: ICurrencyValues;
+  market_cap_change_24h_in_currency: ICurrencyValues;
+  market_cap_change_percentage_24h_in_currency: ICurrencyValues;
+}
+
 export interface ICoinDetails {
   id: string;
   symbol: string;
   name: string;
   web_slug: string;
   categories: [];
-  // ==? localization.en
   localization: object;
-  //  =====> description.en
   description: object;
   whitepaper: string;
   image: IImages;
   market_cap_rank: number | null;
-  market_data: {
-    current_price: ICurrencyValues;
-    ath: IConverted;
-    ath_change_percentage: ICurrencyValues;
-    ath_date: ICurrencyValues;
-    atl: ICurrencyValues;
-    atl_change_percentage: ICurrencyValues;
-    atl_date: ICurrencyValues;
-    market_cap: ICurrencyValues;
-    total_volume: ICurrencyValues;
-    high_24h: ICurrencyValues;
-    low_24h: ICurrencyValues;
-    price_change_24h: number | null;
-    price_change_percentage_24h: number | null;
-    price_change_percentage_7d: number | null;
-    price_change_percentage_14d: number | null;
-    price_change_percentage_30d: number | null;
-    price_change_percentage_60d: number | null;
-    price_change_percentage_200d: number | null;
-    price_change_percentage_1y: number | null;
-    market_cap_change_24h: number | null;
-    market_cap_change_percentage_24h: number | null;
-    price_change_24h_in_currency: ICurrencyValues;
-    price_change_percentage_1h_in_currency: ICurrencyValues;
-    price_change_percentage_24h_in_currency: ICurrencyValues;
-    price_change_percentage_7d_in_currency: ICurrencyValues;
-    price_change_percentage_14d_in_currency: ICurrencyValues;
-    price_change_percentage_30d_in_currency: ICurrencyValues;
-    price_change_percentage_60d_in_currency: ICurrencyValues;
-    price_change_percentage_200d_in_currency: ICurrencyValues;
-    price_change_percentage_1y_in_currency: ICurrencyValues;
-    market_cap_change_24h_in_currency: ICurrencyValues;
-    market_cap_change_percentage_24h_in_currency: ICurrencyValues;
-  };
+  market_data: IMarketData;
   last_updated: string | Date;
 }
