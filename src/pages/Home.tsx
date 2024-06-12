@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchCoins, coinsSelector } from "../store/slices/coins";
-import { Card, Pagination } from "../components";
-import { Link } from "react-router-dom";
+import { Pagination, TableData } from "../components";
 import { coinSelector } from "../store/slices/coin";
 
 const Coins = () => {
@@ -12,8 +11,9 @@ const Coins = () => {
 
   const { currency } = useAppSelector(coinSelector);
 
+  console.log("coins", coins);
+
   const dispatch = useAppDispatch();
-  console.log("page", page);
 
   useEffect(() => {
     dispatch(fetchCoins({ page }));
@@ -30,30 +30,33 @@ const Coins = () => {
     <CoinsWrapper>
       <CoinsContainer>
         {loading ? (
-          <div>Loading...</div>
+          <LoadingWrapper>
+            <p>Loading...</p>
+          </LoadingWrapper>
         ) : (
-          <>
-            {coins.map((coin) => (
-              <Link key={coin.id} to={`/coin/${coin.id}`}>
-                <Card key={coin.id} coin={coin} currency={currency} />
-              </Link>
-            ))}
-          </>
+          <TableData coins={coins} currency={currency} />
         )}
       </CoinsContainer>
-      <Pagination page={page} totalPages={totalPages} />
+      <PaginationContainer>
+        <Pagination page={page} totalPages={totalPages} />
+      </PaginationContainer>
     </CoinsWrapper>
   );
 };
 
 export default Coins;
 
-const CoinsWrapper = styled.div`
-  border: 2px solid pink;
-  width: 100%;
-  height: 100%;
-`;
+const CoinsWrapper = styled.div``;
 
 const CoinsContainer = styled.div`
   padding: 1rem;
+  height: 100%;
+`;
+
+const PaginationContainer = styled.div``;
+
+const LoadingWrapper = styled.div`
+  padding: 2rem;
+  height: 100%;
+  min-height: 400px;
 `;

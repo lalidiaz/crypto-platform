@@ -1,19 +1,59 @@
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchCoinDetails, coinSelector } from "../store/slices/coin";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { Table, Title, Tag, Stats, Select } from "../components";
-import { formatDate, formatPercentage, formatCurrency } from "../utils/helpers";
+import { Title, Tag, Stats, Select, RouteLink } from "../components";
+import {
+  formatDate,
+  formatPercentage,
+  formatCurrency,
+  createMarkup,
+  formatCompactNumber,
+} from "../utils/helpers";
+import {
+  fetchCoinDetails,
+  coinSelector,
+  fetchCoinHistoricalChart,
+} from "../store/slices/coin";
+import { IOption } from "../types";
+import { setCurrency } from "../store/slices/coin";
+
+interface ICurrencyOption extends IOption {
+  format: string;
+  label: string;
+  value: string;
+}
+
+const currencyOptions: ICurrencyOption[] = [
+  { label: "USD", value: "usd", format: "en-US" },
+  { label: "AED", value: "aed", format: "en-AE" },
+  { label: "ARS", value: "ars", format: "es-AR" },
+];
 
 const Detail = () => {
   const { id } = useParams();
-  const { coin, loading, error, currency } = useAppSelector(coinSelector);
+  const {
+    coin,
+    loading,
+    error,
+    currency,
+    historicalChart: { historicalData, loadingHistoryChart, errorHistoryChart },
+  } = useAppSelector(coinSelector);
 
+  console.log("coin ===>", coin);
+
+  const handleCurrencyChange = (option: ICurrencyOption) => {
+    dispatch(setCurrency(option));
+  };
+
+  const days = 360;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (id) dispatch(fetchCoinDetails({ id }));
+    dispatch(
+      fetchCoinHistoricalChart({ id, days: days, currency: currency.currency })
+    );
   }, [id]);
 
   const {
@@ -22,7 +62,9 @@ const Detail = () => {
     image,
     categories,
     description,
+    watchlist_portfolio_users,
     whitepaper,
+    last_updated,
     market_cap_rank,
     market_data: {
       current_price,
@@ -62,34 +104,50 @@ const Detail = () => {
 
   const displayTags = categories.map((category) => <Tag text={category} />);
 
-  let descriptionText = description.en?.split(",")[0];
-
   return (
     <DetailsContainer>
       <SelectContainer>
-        <Select currency={currency} />
+        <RouteLink to={`/coin/${coin.id}/history`} label="History" />
+        <Select
+          options={currencyOptions}
+          value={currency}
+          onChange={handleCurrencyChange}
+        />
       </SelectContainer>
+
       <TopContainer>
-        <NameBanner>
+        <RightContent>
           <Img src={image.large} />
           <NameContainer>
-            <Name>{name}</Name>
-            <Symbol>{symbol.toUpperCase()}</Symbol>
+            <div>
+              <Name>{name}</Name>
+              <Symbol>{symbol.toUpperCase()}</Symbol>
+            </div>
+            <LastUpdated>{formatDate(last_updated)} last updated</LastUpdated>
           </NameContainer>
-
-          {/* <MarketCapRank>{market_cap_rank}</MarketCapRank> */}
-        </NameBanner>
-        <CurrentPrice>
-          {formatCurrency(currency, current_price[currency.currency])}
-        </CurrentPrice>
+        </RightContent>
+        <LeftContainer>
+          <CurrentPrice>
+            {formatCurrency(currency, current_price[currency.currency])}
+          </CurrentPrice>
+          <PorfolioUsers>
+            {formatCompactNumber(watchlist_portfolio_users)} Portfolio users
+          </PorfolioUsers>
+          <MarketCapRank>Rank number {market_cap_rank}</MarketCapRank>
+        </LeftContainer>
       </TopContainer>
 
-      {/* <Localization>{localization?.en}</Localization> */}
       <DescriptionContainer>
         <Title title={`About ${name}`} />
-        <Description>{descriptionText}</Description>
+        {description && description.en && (
+          <Description dangerouslySetInnerHTML={createMarkup(description.en)} />
+        )}
       </DescriptionContainer>
-      {/* <TagsContainer>{displayTags}</TagsContainer> */}
+
+      <ResourcesContainer>
+        <Title title="Resources" />
+        <Tag text="lala" />
+      </ResourcesContainer>
 
       <Container>
         <Title title="Market Stats" />
@@ -243,6 +301,15 @@ const Detail = () => {
 
 export default Detail;
 
+const PorfolioUsers = styled.div`
+  color: var(--green);
+  font-size: 1rem;
+`;
+const LastUpdated = styled.p`
+  font-size: 0.8rem;
+  font-style: italic;
+`;
+
 const DetailsContainer = styled.div`
   padding: 2rem;
 `;
@@ -251,24 +318,29 @@ const TopContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--gray-light-2);
   padding: 0rem 2rem 0rem 0rem;
   font-size: 2rem;
 `;
 
 const Img = styled.img`
-  width: 100px;
+  width: 150px;
 `;
+
+const ResourcesContainer = styled.div``;
 
 const NameContainer = styled.div`
   padding-left: 1rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 1.5rem;
+  p {
+    margin: 0rem;
+    padding: 0.5rem 0rem;
+  }
 `;
 const Symbol = styled.span`
-  font-weight: bold;
   color: var(--green);
-  padding-left: 1rem;
 `;
 
 const CurrentPrice = styled.p``;
@@ -276,14 +348,22 @@ const Name = styled.p``;
 
 const Localization = styled.p``;
 
-const Description = styled.p``;
+const Description = styled.div`
+  line-height: 1.8rem;
+`;
 
-const MarketCapRank = styled.p``;
+const MarketCapRank = styled.p`
+  font-size: 1rem;
+`;
 
-const NameBanner = styled.div`
+const RightContent = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 2rem;
+`;
+
+const LeftContainer = styled.div`
+  text-align: right;
 `;
 
 const DescriptionContainer = styled.div``;
@@ -310,6 +390,7 @@ const MarketPerformance = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: no-wrap;
+  width: 100%;
 
   @media only screen and (min-width: 992px) {
     flex-direction: row;
@@ -317,11 +398,17 @@ const MarketPerformance = styled.div`
   }
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const SelectContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding-right: 2rem;
+
+  a {
+    margin-right: 2rem;
+  }
 `;

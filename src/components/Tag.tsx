@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
-interface ITag {
+type ITag = {
   text: string;
-}
-const Tag = ({ text }: ITag) => {
+  href?: string;
+  download?: boolean;
+};
+const Tag = ({ text, href, download }: ITag) => {
   return (
     <TagContainer>
-      <Name>{text}</Name>
+      <Name href={href} target="_blank" download={download}>
+        {text}
+      </Name>
     </TagContainer>
   );
 };
@@ -14,10 +18,13 @@ const Tag = ({ text }: ITag) => {
 export default Tag;
 
 const TagContainer = styled.div`
-  background-color: var(--gray-light-2);
+  background: var(--green);
   padding: 0rem 1rem;
   border-radius: var(--radius);
   font-size: var(--font-small);
+  max-width: 100px;
+  width: auto;
+  padding: 1rem 1.5rem;
 `;
 
-const Name = styled.p``;
+const Name = styled.a``;

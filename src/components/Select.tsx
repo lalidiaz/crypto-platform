@@ -1,34 +1,34 @@
 import styled from "styled-components";
-import { useAppDispatch } from "../store/hooks";
-import { setCurrency } from "../store/slices/coin";
-import { useState } from "react";
+import { IOption } from "../types";
 
-interface ISelectProps {
-  currency: string;
-  format: string;
-}
+type ISelectProps<T extends IOption> = {
+  options: T[];
+  value: T;
+  onChange: (option: T) => void;
+};
 
-const Select = ({ currency }: ISelectProps) => {
-  const dispatch = useAppDispatch();
-
-  const currencies = [
-    { currency: "usd", format: "en-US" },
-    { currency: "aed", format: "en-AE" },
-    { currency: "ars", format: "es-AR" },
-  ];
-
-  const displayOptions = currencies.map((currencyItem) => (
-    <option key={currencyItem.format} value={currencyItem.currency}>
-      {currencyItem.currency.toUpperCase()}
+const Select = <T extends IOption>({
+  options,
+  value,
+  onChange,
+}: ISelectProps<T>) => {
+  const displayOptions = options.map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.label}
     </option>
   ));
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setCurrency(currencies[e.target.selectedIndex]));
+    const selectedOption = options.find(
+      (option) => option.value === e.target.value
+    );
+    if (selectedOption) {
+      onChange(selectedOption);
+    }
   };
 
   return (
-    <SelectInput value={currencies[currency.currency]} onChange={handleChange}>
+    <SelectInput value={value.value} onChange={handleChange}>
       {displayOptions}
     </SelectInput>
   );

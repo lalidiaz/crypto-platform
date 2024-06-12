@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-interface ITitle {
+type ITitle = {
   title: string;
-}
+};
 const Title = ({ title }: ITitle) => {
   return <TitleText>{title}</TitleText>;
 };
@@ -10,5 +10,5 @@ const Title = ({ title }: ITitle) => {
 export default Title;
 
 const TitleText = styled.h2`
-  padding-bottom: 2rem;
+  font-weight: normal;
 `;

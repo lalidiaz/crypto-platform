@@ -1,26 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { ICoinDetails } from "../../types";
+import { ICoinDetails, IHistoricalChart, ICurrency } from "../../types";
 import axios from "axios";
 
-interface CoinState {
+type CoinState = {
   coin: ICoinDetails;
   loading: boolean;
   error: string | null;
-  currency: {
-    format: string;
-    currency: string;
+  currency: ICurrency;
+  historicalChart: {
+    loadingHistoryChart: boolean;
+    historicalData: IHistoricalChart | [];
+    errorHistoryChart: string | null;
   };
-}
+};
 
 const CurrencyInitialState = {
   aed: "",
   usd: "",
   ars: "",
-  currency: {
-    format: "en-US",
-    currency: "usd",
-  },
 };
 
 const initialState: CoinState = {
@@ -34,6 +32,7 @@ const initialState: CoinState = {
     description: {},
     whitepaper: "",
     image: { thumb: "", small: "", large: "" },
+    watchlist_portfolio_users: null,
     market_cap_rank: null,
     market_data: {
       current_price: CurrencyInitialState,
@@ -74,8 +73,14 @@ const initialState: CoinState = {
   loading: false,
   error: null,
   currency: {
+    label: "USD",
     format: "en-US",
     currency: "usd",
+  },
+  historicalChart: {
+    loadingHistoryChart: false,
+    errorHistoryChart: null,
+    historicalData: [],
   },
 };
 
@@ -84,7 +89,8 @@ export const coinsSlice = createSlice({
   initialState,
   reducers: {
     setCurrency: (state, action) => {
-      state.currency = action.payload;
+      state.currency.format = action.payload.format;
+      state.currency.currency = action.payload.value;
     },
   },
   extraReducers: (builder) => {
@@ -109,6 +115,8 @@ export const coinsSlice = createSlice({
         state.coin.market_cap_rank = action.payload.market_cap_rank;
         state.coin.market_data.current_price =
           action.payload.market_data.current_price;
+        state.coin.watchlist_portfolio_users =
+          action.payload.watchlist_portfolio_users;
 
         state.coin.market_data.ath = action.payload.market_data.ath;
         state.coin.market_data.ath_change_percentage =
@@ -180,6 +188,19 @@ export const coinsSlice = createSlice({
       .addCase(fetchCoinDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
+      })
+      .addCase(fetchCoinHistoricalChart.pending, (state) => {
+        state.historicalChart.loadingHistoryChart = true;
+        state.historicalChart.errorHistoryChart = null;
+      })
+      .addCase(fetchCoinHistoricalChart.fulfilled, (state, action) => {
+        state.historicalChart.loadingHistoryChart = false;
+        state.historicalChart.historicalData = action.payload.prices;
+      })
+      .addCase(fetchCoinHistoricalChart.rejected, (state, action) => {
+        state.historicalChart.loadingHistoryChart = false;
+        state.historicalChart.errorHistoryChart =
+          action.error.message || "Something went wrong";
       });
   },
 });
@@ -208,6 +229,34 @@ export const fetchCoinDetails = createAsyncThunk<
     return thunkAPI.rejectWithValue("Failed to fetch coins.");
   }
 });
+
+// Coin Historical Chart Data within Time Range by ID
+export const fetchCoinHistoricalChart = createAsyncThunk<
+  IHistoricalChart,
+  { id: string; days: number; currency: string },
+  { rejectValue: string }
+>(
+  "coin/fetchCoinHistoricalChart",
+  async ({ id, days = 365, currency }, thunkAPI) => {
+    try {
+      const request = {
+        method: "GET",
+        url: `https://api.coingecko.com/api/v3/coins/${id}/market_chart`,
+        params: { vs_currency: currency, days: days },
+        headers: {
+          accept: "application/json",
+          "x-cg-demo-api-key": import.meta.env.VITE_API_KEY,
+        },
+      };
+      const response = await axios(request);
+
+      console.log("----- response fetchCoinHistoricalChart-----", response);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Failed to fetch coins.");
+    }
+  }
+);
 
 export const { setCurrency } = coinsSlice.actions;
 

@@ -1,33 +1,27 @@
 import { RouteObject } from "react-router-dom";
 import App from "./App.tsx";
-import { Coins, Detail } from "./pages/index.ts";
+import { Home, Detail, History, Coin } from "./pages";
 
 const routes: RouteObject[] = [
   {
     path: "/",
     element: <App />,
+    errorElement: <div>Error page</div>,
     children: [
-      { index: true, element: <Coins /> },
-      { path: "coin/:id", element: <Detail /> },
+      { index: true, element: <Home /> },
+      {
+        path: "coin/:id",
+        element: <Coin />,
+        children: [
+          { index: true, element: <Detail /> },
+          { path: "history", element: <History /> },
+        ],
+      },
+      // { path: "*", element: <NoMatch /> },
     ],
-    // errorElement: <ErrorPage />,
-    // children: [
-    //   { index: true, element: <HomePage /> },
-    //   { path: "playground", element: <PlaygroundPage /> },
-    //   { path: "products", element: <ProductListPage /> },
-    //   { path: "products/:id", element: <ProductDetailPage /> },
-    //   {
-    //     path: "admin",
-    //     element: <AdminLayout />,
-    //     children: [
-    //       { index: true, element: <AdminHomePage /> },
-    //       { path: "products", element: <AdminProductListPage /> },
-    //       { path: "products/new", element: <NewProductPage /> },
-    //       { path: "products/:id/edit", element: <EditProductPage /> },
-    //     ],
-    //   },
-    // ],
   },
 ];
 
 export default routes;
+
+///coin/:id/details/bitcoin/history

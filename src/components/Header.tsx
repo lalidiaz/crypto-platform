@@ -62,8 +62,3 @@ const Avatar = styled.img`
 `;
 
 const UserName = styled.p``;
-
-const Profile = styled.div`
-  display: flex;
-  align-items: cetner;
-`;

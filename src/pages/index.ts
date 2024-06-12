@@ -1,4 +1,6 @@
-import Coins from "./Coins";
+import Home from "./Home";
 import Detail from "./Detail";
+import History from "./History";
+import Coin from "./Coin";
 
-export { Coins, Detail };
+export { Home, Detail, History, Coin };

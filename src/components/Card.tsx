@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { ICoin } from "../types";
 import { formatCurrency } from "../utils/helpers";
 
-interface ICard {
+type ICard = {
   key: string;
   coin: ICoin;
   currency: {
     currency: string;
     format: string;
   };
-}
+};
 
 const Card = ({ coin, currency }: ICard) => {
   const { name, symbol, image, current_price } = coin;

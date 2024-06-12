@@ -36,9 +36,8 @@ export default Navbar;
 
 const NavContainer = styled.nav`
   padding: 2rem;
-  width: 17rem;
-  height: 100%;
-  min-height: 100vh;
+  width: 12rem;
+  height: auto;
   background-color: var(--card);
 `;
 

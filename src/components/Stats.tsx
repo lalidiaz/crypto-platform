@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-interface IStats {
+type IStats = {
   name: string;
   data: string | number | null;
-}
+};
 const Stats = ({ name, data }: IStats) => {
   let isNegative = data?.toString().includes("-");
 

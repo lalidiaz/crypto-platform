@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { useAppDispatch } from "../store/hooks";
 import { setNextPage, setPrevPage, setPage } from "../store/slices/coins";
 
-interface IPagination {
+type IPagination = {
   page: number;
   totalPages: number;
-}
+};
 const Pagination = ({ page, totalPages }: IPagination) => {
   const dispatch = useAppDispatch();
 
@@ -52,7 +52,7 @@ const ButtonPage = styled.button`
     props.selected ? "var(--green)" : "var(--card)"};
   border: none;
   color: var(--white);
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   border-radius: var(--radius);
   cursor: pointer;
 `;

@@ -24,14 +24,14 @@ export const GlobalStyle = createGlobalStyle`
   
 }
 
-body {
+html, body, #root {
     paddig:0;
     margin:0;
     box-sizing:border-box;
     background:var(--background);
     color:var(--white);
     min-height: 100vh;
-    height: auto;
+    height: 100%;
     width:100%;
     font-family:var(--work-sans);
 }

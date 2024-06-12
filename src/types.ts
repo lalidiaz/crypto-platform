@@ -1,4 +1,4 @@
-export interface ICoin {
+export type ICoin = {
   id: string;
   symbol: string;
   name: string;
@@ -25,42 +25,27 @@ export interface ICoin {
   atl_date?: Date;
   roi: number | null;
   last_updated?: Date;
-}
+};
 
-interface IImages {
+type IImages = {
   thumb: string;
   small: string;
   large: string;
-}
+};
 
-interface ICurrencyValues {
+type ICurrencyValues = {
   aed?: string;
   usd?: string;
   ars?: string;
-}
+};
 
-interface IConverted {
+type IConverted = {
   btc: number | null;
   eth: number | null;
   usd: number | null;
-}
+};
 
-// interface IThickers {
-//   base: string;
-//   target: string;
-//   market: object;
-//   last: number;
-//   volume: number;
-//   converted_last: IConverted;
-//   converted_volume: IConverted;
-//   timestamp: string | Date;
-//   last_traded_at: string | Date;
-//   last_fetch_at: string | Date;
-//   coin_id: string;
-//   target_coin_id: string;
-// }
-
-export interface IMarketData {
+export type IMarketData = {
   current_price: ICurrencyValues;
   ath: IConverted;
   ath_change_percentage: ICurrencyValues;
@@ -93,13 +78,14 @@ export interface IMarketData {
   price_change_percentage_1y_in_currency: ICurrencyValues;
   market_cap_change_24h_in_currency: ICurrencyValues;
   market_cap_change_percentage_24h_in_currency: ICurrencyValues;
-}
+};
 
-export interface ICoinDetails {
+export type ICoinDetails = {
   id: string;
   symbol: string;
   name: string;
   web_slug: string;
+  watchlist_portfolio_users: number | null;
   categories: [];
   localization: object;
   description: object;
@@ -108,4 +94,19 @@ export interface ICoinDetails {
   market_cap_rank: number | null;
   market_data: IMarketData;
   last_updated: string | Date;
-}
+};
+
+export type IHistoricalChart = {
+  prices: number[];
+};
+
+export type IOption = {
+  label: string;
+  value: string;
+};
+
+export type ICurrency = {
+  label: string;
+  format: string;
+  currency: string;
+};

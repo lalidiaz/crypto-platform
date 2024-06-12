@@ -3,13 +3,13 @@ import { RootState } from "../store";
 import { ICoin } from "../../types";
 import axios from "axios";
 
-interface CoinsState {
+type CoinsState = {
   coins: ICoin[];
   loading: boolean;
   error: string | null;
   page: number;
   totalPages: number;
-}
+};
 
 const initialState: CoinsState = {
   coins: [],
@@ -74,7 +74,6 @@ export const fetchCoins = createAsyncThunk<
     };
 
     const response = await axios(request);
-    console.log("response", response);
 
     return response.data;
   } catch (error) {
