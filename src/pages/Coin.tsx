@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom";
 
-const Coin = () => {
+export default function Coin() {
   return <Outlet />;
-};
-
-export default Coin;
+}

@@ -1,7 +1,7 @@
 import DOMPurify from "dompurify";
 
 export const formatCurrency = (
-  currency: { format: string; currency: string },
+  currency: { label?: string; format: string; currency: string },
   amount: number
 ) => {
   return new Intl.NumberFormat(currency.format, {

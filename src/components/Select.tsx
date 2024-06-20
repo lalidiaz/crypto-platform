@@ -1,17 +1,25 @@
 import styled from "styled-components";
 import { IOption } from "../types";
 
-type ISelectProps<T extends IOption> = {
+const SelectInput = styled.select`
+  background-color: var(--card);
+  border: 1px solid white;
+  color: white;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.8rem;
+`;
+
+type SelectProps<T extends IOption> = {
   options: T[];
   value: T;
   onChange: (option: T) => void;
 };
 
-const Select = <T extends IOption>({
+export default function Select<T extends IOption>({
   options,
   value,
   onChange,
-}: ISelectProps<T>) => {
+}: SelectProps<T>) {
   const displayOptions = options.map((option) => (
     <option key={option.value} value={option.value}>
       {option.label}
@@ -32,13 +40,4 @@ const Select = <T extends IOption>({
       {displayOptions}
     </SelectInput>
   );
-};
-
-export default Select;
-
-const SelectInput = styled.select`
-  background-color: var(--green);
-  border-radius: var(--radius);
-  border: none;
-  padding: 0.5rem 0.8rem;
-`;
+}

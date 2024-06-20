@@ -1,12 +1,31 @@
 import styled from "styled-components";
 import { useAppDispatch } from "../store/hooks";
-import { setNextPage, setPrevPage, setPage } from "../store/slices/coins";
+import { setPage } from "../store/slices/coins";
 
-type IPagination = {
+const PaginationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;
+
+const ButtonPage = styled.button`
+  background-color: ${(props) =>
+    props.selected ? "var(--green)" : "var(--card)"};
+  border: none;
+  color: var(--white);
+  padding: 0.8rem 2rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+`;
+
+type PaginationProps = {
   page: number;
   totalPages: number;
 };
-const Pagination = ({ page, totalPages }: IPagination) => {
+
+export default function Pagination({ page, totalPages }: PaginationProps) {
   const dispatch = useAppDispatch();
 
   const pagesBtn = Array.from({ length: totalPages }, (_, index) => {
@@ -22,11 +41,15 @@ const Pagination = ({ page, totalPages }: IPagination) => {
   });
 
   const handleChangePrev = () => {
-    dispatch(setPrevPage());
+    if (page === 1) {
+      return;
+    } else dispatch(setPage(page - 1));
   };
 
   const handleChangeNext = () => {
-    dispatch(setNextPage());
+    if (page === 10) {
+      return;
+    } else dispatch(setPage(page + 1));
   };
 
   return (
@@ -36,23 +59,4 @@ const Pagination = ({ page, totalPages }: IPagination) => {
       <ButtonPage onClick={handleChangeNext}>Next</ButtonPage>
     </PaginationContainer>
   );
-};
-
-export default Pagination;
-
-const PaginationContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 1rem 4rem;
-`;
-
-const ButtonPage = styled.button`
-  background-color: ${(props) =>
-    props.selected ? "var(--green)" : "var(--card)"};
-  border: none;
-  color: var(--white);
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius);
-  cursor: pointer;
-`;
+}

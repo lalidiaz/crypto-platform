@@ -1,32 +1,15 @@
 import styled from "styled-components";
-import { ICoin } from "../types";
+import { Coin } from "../types";
 import { formatCurrency } from "../utils/helpers";
 
-type ICard = {
+type CardProps = {
   key: string;
-  coin: ICoin;
+  coin: Coin;
   currency: {
     currency: string;
     format: string;
   };
 };
-
-const Card = ({ coin, currency }: ICard) => {
-  const { name, symbol, image, current_price } = coin;
-
-  return (
-    <CardContainer>
-      <Img src={image} alt={`${name}-logo`} />
-      <Name>{name}</Name>
-      <Symbol>{symbol.toUpperCase()}</Symbol>
-      <CurrentPrice>
-        {formatCurrency(currency, current_price[currency.currency])}
-      </CurrentPrice>
-    </CardContainer>
-  );
-};
-
-export default Card;
 
 const CardContainer = styled.div`
   display: grid;
@@ -55,3 +38,18 @@ const Symbol = styled.p`
 const CurrentPrice = styled.p`
   grid-column: 4;
 `;
+
+export default function Card({ coin, currency }: CardProps) {
+  const { name, symbol, image, current_price } = coin;
+
+  return (
+    <CardContainer>
+      <Img src={image} alt={`${name}-logo`} />
+      <Name>{name}</Name>
+      <Symbol>{symbol.toUpperCase()}</Symbol>
+      <CurrentPrice>
+        {formatCurrency(currency, current_price[currency.currency])}
+      </CurrentPrice>
+    </CardContainer>
+  );
+}

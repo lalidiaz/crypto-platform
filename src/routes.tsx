@@ -1,12 +1,21 @@
 import { RouteObject } from "react-router-dom";
 import App from "./App.tsx";
-import { Home, Detail, History, Coin } from "./pages";
+import {
+  Home,
+  Detail,
+  History,
+  Coin,
+  Categories,
+  ErrorPage,
+  NoMatch,
+  MarketData,
+} from "./pages";
 
 const routes: RouteObject[] = [
   {
     path: "/",
     element: <App />,
-    errorElement: <div>Error page</div>,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
       {
@@ -15,9 +24,11 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: <Detail /> },
           { path: "history", element: <History /> },
+          { path: "market-data", element: <MarketData /> },
         ],
       },
-      // { path: "*", element: <NoMatch /> },
+      { path: "categories", element: <Categories /> },
+      { path: "*", element: <NoMatch /> },
     ],
   },
 ];

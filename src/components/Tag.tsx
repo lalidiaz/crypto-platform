@@ -1,30 +1,33 @@
 import styled from "styled-components";
 
-type ITag = {
+const TagContainer = styled.a`
+  background: none;
+  border: 1px solid white;
+  color: white;
+  border-radius: var(--radius);
+  font-size: var(--font-small);
+  width: auto;
+  max-width: 100px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+
+  margin-right: 1rem;
+
+  &:hover {
+    background: white;
+    color: var(--background);
+  }
+`;
+
+type TagProps = {
   text: string;
   href?: string;
   download?: boolean;
 };
-const Tag = ({ text, href, download }: ITag) => {
+export default function Tag({ text, href, download }: TagProps) {
   return (
-    <TagContainer>
-      <Name href={href} target="_blank" download={download}>
-        {text}
-      </Name>
+    <TagContainer href={href} target="_blank" download={download}>
+      {text}
     </TagContainer>
   );
-};
-
-export default Tag;
-
-const TagContainer = styled.div`
-  background: var(--green);
-  padding: 0rem 1rem;
-  border-radius: var(--radius);
-  font-size: var(--font-small);
-  max-width: 100px;
-  width: auto;
-  padding: 1rem 1.5rem;
-`;
-
-const Name = styled.a``;
+}

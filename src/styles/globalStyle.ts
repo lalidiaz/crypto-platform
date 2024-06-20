@@ -11,10 +11,12 @@ export const GlobalStyle = createGlobalStyle`
 
 
 /* Color */
-  --background: #1E1E1E;
+  --background: #0D0D0D; 
+  --gray-medium: #151718;
+  --btn-dark-gray: #1A1D1E;
   --white: #FFFFFF;
   --green: #45E3B8;
-  --card: #212325;
+  --card: #212325; 
   --gray-light-1: #E1E1E1;
   --gray-light-2:#909093;
   --red: #ff1a1a;
@@ -24,14 +26,14 @@ export const GlobalStyle = createGlobalStyle`
   
 }
 
+
 html, body, #root {
     paddig:0;
     margin:0;
     box-sizing:border-box;
     background:var(--background);
     color:var(--white);
-    min-height: 100vh;
-    height: 100%;
+    height: 100vh;
     width:100%;
     font-family:var(--work-sans);
 }

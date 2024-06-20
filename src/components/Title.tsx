@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-type ITitle = {
+const TitleText = styled.h2`
+  font-weight: bold;
+  padding-bottom: 1rem;
+`;
+
+type TitleProps = {
   title: string;
 };
-const Title = ({ title }: ITitle) => {
+
+export default function Title({ title }: TitleProps) {
   return <TitleText>{title}</TitleText>;
-};
-
-export default Title;
-
-const TitleText = styled.h2`
-  font-weight: normal;
-`;
+}

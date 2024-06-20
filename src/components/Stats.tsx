@@ -1,10 +1,35 @@
 import styled from "styled-components";
+import { device } from "../styles/breakpoints";
 
-type IStats = {
+const StatsContainer = styled.div`
+  margin: 0.5rem;
+  width: 20%;
+  background-color: var(--card);
+  padding: 2rem;
+  border-radius: 2rem;
+
+  @media ${device.laptop} {
+    width: 100%;
+  }
+`;
+
+const Name = styled.p`
+  height: 70%;
+  font-size: 0.8rem;
+`;
+
+const Data = styled.p`
+  color: ${(props) => (props.isNegative ? "var(--red)" : "var(--green)")};
+  text-align: right;
+  padding-right: 1rem;
+`;
+
+type StatsProps = {
   name: string;
   data: string | number | null;
 };
-const Stats = ({ name, data }: IStats) => {
+
+export default function Stats({ name, data }: StatsProps) {
   let isNegative = data?.toString().includes("-");
 
   return (
@@ -13,23 +38,4 @@ const Stats = ({ name, data }: IStats) => {
       <Data isNegative={isNegative}>{data}</Data>
     </StatsContainer>
   );
-};
-
-export default Stats;
-
-const StatsContainer = styled.div`
-  width: 100%;
-  margin: 0.5rem;
-  background-color: var(--card);
-  padding: 1rem;
-
-  @media only screen and (min-width: 992px) {
-    width: 20%;
-  }
-`;
-
-const Name = styled.p``;
-
-const Data = styled.p`
-  color: ${(props) => (props.isNegative ? "var(--red)" : "var(--green)")};
-`;
+}
