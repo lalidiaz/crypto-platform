@@ -3,7 +3,7 @@ import { device } from "../styles/breakpoints";
 
 const StatsContainer = styled.div`
   margin: 0.5rem;
-  width: 20%;
+  width: 28%;
   background-color: var(--card);
   padding: 2rem;
   border-radius: 2rem;
@@ -15,7 +15,7 @@ const StatsContainer = styled.div`
 
 const Name = styled.p`
   height: 70%;
-  font-size: 0.8rem;
+  font-size: 1rem;
 `;
 
 const Data = styled.p`

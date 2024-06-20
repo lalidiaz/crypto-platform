@@ -147,6 +147,13 @@ const CategoriesContainer = styled.div`
   padding: 0rem 0rem 2rem 0rem;
 `;
 
+const Tags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+`;
+
 const LinksContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -258,7 +265,7 @@ export default function Detail() {
 
           <CategoriesContainer>
             <Title title="Categories" />
-            {displayTags}
+            <Tags>{displayTags}</Tags>
           </CategoriesContainer>
 
           <DescriptionContainer>

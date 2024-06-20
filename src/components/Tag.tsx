@@ -7,11 +7,9 @@ const TagContainer = styled.a`
   border-radius: var(--radius);
   font-size: var(--font-small);
   width: auto;
-  max-width: 100px;
   padding: 0.5rem 1rem;
   text-align: center;
-
-  margin-right: 1rem;
+  height: auto;
 
   &:hover {
     background: white;

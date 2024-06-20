@@ -14,6 +14,7 @@ import Button from "./Button";
 import Header from "./Header";
 import Loader from "./Loader";
 import Error from "./Error";
+import Back from "./Back";
 
 export {
   Layout,
@@ -32,4 +33,5 @@ export {
   Header,
   Loader,
   Error,
+  Back,
 };

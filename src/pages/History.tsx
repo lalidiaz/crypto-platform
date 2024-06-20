@@ -3,10 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { coinSelector, fetchCoinHistoryChart } from "../store/slices/coin";
-import { Chart, Button, Loader, Error } from "../components";
+import { Chart, Button, Loader, Error, Back } from "../components";
 import { device } from "../styles/breakpoints";
-import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -65,20 +63,6 @@ const BtnContainer = styled.div`
   }
 `;
 
-const BackBtn = styled.button`
-  display: flex;
-  align-items: center;
-  margin: 0rem 0rem 0.5rem 1rem;
-
-  &:hover {
-    font-weight: bold;
-  }
-`;
-
-const Icon = styled.span`
-  margin-right: 0.5rem;
-`;
-
 export default function History() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -87,7 +71,6 @@ export default function History() {
     currency,
     historyChart: { dataHistoryChart, loadingHistoryChart, errorHistoryChart },
   } = useAppSelector(coinSelector);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
@@ -122,12 +105,7 @@ export default function History() {
 
   return (
     <Wrapper>
-      <BackBtn onClick={() => navigate(-1)}>
-        <Icon>
-          <FaArrowLeft />
-        </Icon>
-        Back
-      </BackBtn>
+      <Back />
 
       <BtnContainer>{displayBtns}</BtnContainer>
       <ChartContainer>

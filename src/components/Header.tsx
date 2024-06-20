@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import avatar from "../assets/Betty.svg";
-import { useLocation } from "react-router-dom";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -17,12 +16,6 @@ const Avatar = styled.img`
 const UserName = styled.p``;
 
 export default function Header() {
-  const currDate: Date = new Date();
-  const dateStr = currDate.toDateString();
-  const { pathname } = useLocation();
-
-  const normalizeString = pathname.replace("/", "");
-
   return (
     <HeaderContainer>
       <Avatar src={avatar} alt="avatar" />
