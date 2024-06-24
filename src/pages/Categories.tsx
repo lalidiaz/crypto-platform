@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { Title } from "../components";
+import { Title, Loader, Error } from "../components";
 import { formatCompactNumber } from "../utils/helpers";
 import {
   fetchCategories,
@@ -60,12 +60,15 @@ const TitleContainer = styled.div`
 `;
 
 export default function CategoriesList() {
-  const { categories } = useAppSelector(categoriesSelector);
+  const { categories, loadingCategories, errorCategories } =
+    useAppSelector(categoriesSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchCategories());
-  }, [categories]);
+  }, []);
+
+  if (errorCategories) return <Error error={errorCategories} />;
 
   const displayCategories = categories.map((item) => {
     return (
@@ -92,13 +95,17 @@ export default function CategoriesList() {
       </Card>
     );
   });
-
+  console.log("loadingCategories", loadingCategories);
   return (
     <CategoriesWrapper>
       <TitleContainer>
         <Title title="Categories" />
       </TitleContainer>
-      <CategoriesContent>{displayCategories}</CategoriesContent>
+      {loadingCategories ? (
+        <Loader />
+      ) : (
+        <CategoriesContent>{displayCategories}</CategoriesContent>
+      )}
     </CategoriesWrapper>
   );
 }

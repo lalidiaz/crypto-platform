@@ -55,7 +55,6 @@ export const fetchCategories = createAsyncThunk<
 
     return response.data;
   } catch (error) {
-    console.log("error fetchCategories", error);
     return thunkAPI.rejectWithValue("Failed to fetch coins.");
   }
 });
