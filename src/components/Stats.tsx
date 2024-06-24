@@ -10,11 +10,11 @@ const StatsContainer = styled.div`
 
   @media ${device.laptop} {
     width: 100%;
+    margin: 0rem 0rem 1rem 0rem;
   }
 `;
 
 const Name = styled.p`
-  height: 70%;
   font-size: 1rem;
 `;
 
@@ -22,6 +22,8 @@ const Data = styled.p`
   color: ${(props) => (props.isNegative ? "var(--red)" : "var(--green)")};
   text-align: right;
   padding-right: 1rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 `;
 
 type StatsProps = {
@@ -32,9 +34,11 @@ type StatsProps = {
 export default function Stats({ name, data }: StatsProps) {
   let isNegative = data?.toString().includes("-");
 
+  const formatDate = name.replace(/_/g, " ").toUpperCase();
+
   return (
     <StatsContainer>
-      <Name>{name.toUpperCase()}</Name>
+      <Name>{formatDate}</Name>
       <Data isNegative={isNegative}>{data}</Data>
     </StatsContainer>
   );

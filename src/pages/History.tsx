@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { coinSelector, fetchCoinHistoryChart } from "../store/slices/coin";
-import { Chart, Button, Loader, Error, Back } from "../components";
+import { Chart, Button, Loader, Error, Back, Title } from "../components";
 import { device } from "../styles/breakpoints";
 
 const Wrapper = styled.div`
@@ -23,7 +23,6 @@ const ChartContainer = styled.div`
 
 const BtnContainer = styled.div`
   padding: 1rem 2rem;
-
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -63,6 +62,12 @@ const BtnContainer = styled.div`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export default function History() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -83,7 +88,6 @@ export default function History() {
   }, [id, days]);
 
   const buttons = [
-    { label: "1D", days: 1 },
     { label: "1W", days: 7 },
     { label: "1M", days: 14 },
     { label: "30D", days: 30 },
@@ -106,8 +110,11 @@ export default function History() {
   return (
     <Wrapper>
       <Back />
-
+      <TitleContainer>
+        <Title title="History" />
+      </TitleContainer>
       <BtnContainer>{displayBtns}</BtnContainer>
+
       <ChartContainer>
         {loadingHistoryChart ? (
           <Loader />

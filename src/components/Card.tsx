@@ -15,9 +15,7 @@ const CardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
   grid-template-rows: 1;
-  background-color: var(--card);
   border-radius: var(--radius);
-  padding: 1rem;
   margin-bottom: 1rem;
   cursor: pointer;
 `;

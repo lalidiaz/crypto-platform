@@ -8,6 +8,7 @@ const PaginationContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+  padding: 1rem 0rem;
 `;
 
 const ButtonPage = styled.button`

@@ -2,11 +2,14 @@ import { useRouteError } from "react-router-dom";
 import styled from "styled-components";
 
 const ErrorWrapper = styled.div`
-  display: flex;
-  flexd-direction: column;
   width: 100%;
   height: 100%;
   justify-content: center;
+  padding: 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  color: red;
 `;
 
 export default function ErrorPage() {

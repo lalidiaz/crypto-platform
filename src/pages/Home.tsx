@@ -2,24 +2,26 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchCoins, coinsSelector } from "../store/slices/coins";
-import { Pagination, Table, Select, Loader, Error } from "../components";
+import { Pagination, Table, Select, Loader, Error, Title } from "../components";
 import { coinSelector, setCurrency } from "../store/slices/coin";
 import { Coin, CurrencyOption } from "../types";
 import { Link } from "react-router-dom";
+import { currencyOptions } from "../utils/constants";
+import { order } from "../utils/constants";
+import { device } from "../styles/breakpoints";
 import {
   formatPercentage,
   formatCurrency,
   formatCompactNumber,
 } from "../utils/helpers";
-import { currencyOptions } from "../utils/constants";
-import { order } from "../utils/constants";
-import { device } from "../styles/breakpoints";
 
 const CoinsWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 2rem;
   position: relative;
+  height: 90vh;
+  overflow-y: scroll;
 
   @media ${device.laptop} {
     padding: 1rem;
@@ -92,6 +94,23 @@ const SelectContainer = styled.div`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+
+  @media ${device.laptop} {
+    flex-direction: column;
+  }
+`;
+
 export default function Home() {
   const { coins, loading, error, page, totalPages } =
     useAppSelector(coinsSelector);
@@ -100,7 +119,6 @@ export default function Home() {
     value: "market_cap_desc",
   });
 
-  console.log("orderSelected", orderSelected);
   const { currency } = useAppSelector(coinSelector);
 
   const dispatch = useAppDispatch();
@@ -154,18 +172,23 @@ export default function Home() {
 
   return (
     <CoinsWrapper>
-      <SelectContainer>
-        <Select
-          options={order}
-          value={orderSelected}
-          onChange={handleChangeOrder}
-        />
-        <Select
-          options={currencyOptions}
-          value={currency}
-          onChange={handleCurrencyChange}
-        />
-      </SelectContainer>
+      <TopContainer>
+        <TitleContainer>
+          <Title title="List" />
+        </TitleContainer>
+        <SelectContainer>
+          <Select
+            options={order}
+            value={orderSelected}
+            onChange={handleChangeOrder}
+          />
+          <Select
+            options={currencyOptions}
+            value={currency}
+            onChange={handleCurrencyChange}
+          />
+        </SelectContainer>
+      </TopContainer>
       <CoinsContainer>
         {loading ? (
           <Loader />

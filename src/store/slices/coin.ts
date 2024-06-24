@@ -20,12 +20,6 @@ type CoinState = {
   };
 };
 
-const CurrencyInitialState = {
-  aed: "",
-  usd: "",
-  ars: "",
-};
-
 const initialState: CoinState = {
   coin: {
     id: "",
@@ -54,38 +48,49 @@ const initialState: CoinState = {
     watchlist_portfolio_users: null,
     market_cap_rank: null,
     market_data: {
-      current_price: CurrencyInitialState,
-      ath: { btc: null, eth: null, usd: null },
-      ath_change_percentage: CurrencyInitialState,
-      ath_date: CurrencyInitialState,
-      atl: CurrencyInitialState,
-      atl_change_percentage: CurrencyInitialState,
-      atl_date: CurrencyInitialState,
-      market_cap: CurrencyInitialState,
-      total_volume: CurrencyInitialState,
-      high_24h: CurrencyInitialState,
-      low_24h: CurrencyInitialState,
-      price_change_24h: null,
-      price_change_percentage_24h: null,
-      price_change_percentage_7d: null,
-      price_change_percentage_14d: null,
-      price_change_percentage_30d: null,
-      price_change_percentage_60d: null,
-      price_change_percentage_200d: null,
-      price_change_percentage_1y: null,
-      market_cap_change_24h: null,
-      market_cap_change_percentage_24h: null,
-      price_change_24h_in_currency: CurrencyInitialState,
-      price_change_percentage_1h_in_currency: CurrencyInitialState,
-      price_change_percentage_24h_in_currency: CurrencyInitialState,
-      price_change_percentage_7d_in_currency: CurrencyInitialState,
-      price_change_percentage_14d_in_currency: CurrencyInitialState,
-      price_change_percentage_30d_in_currency: CurrencyInitialState,
-      price_change_percentage_60d_in_currency: CurrencyInitialState,
-      price_change_percentage_200d_in_currency: CurrencyInitialState,
-      price_change_percentage_1y_in_currency: CurrencyInitialState,
-      market_cap_change_24h_in_currency: CurrencyInitialState,
-      market_cap_change_percentage_24h_in_currency: CurrencyInitialState,
+      atl_change_percentage: null,
+      ath_change_percentage: null,
+      currencies: {
+        current_price: null,
+        atl: null,
+        market_cap: null,
+        total_volume: null,
+        high_24h: null,
+        low_24h: null,
+        price_change_24h_in_currency: null,
+        market_cap_change_24h_in_currency: null,
+      },
+      numbers: { market_cap_change_24h: null, price_change_24h: null },
+      dates: {
+        ath_date: null,
+        atl_date: null,
+      },
+      percentages: {
+        price_change_percentage_24h: null,
+        price_change_percentage_7d: null,
+        price_change_percentage_14d: null,
+        price_change_percentage_30d: null,
+        price_change_percentage_60d: null,
+        price_change_percentage_200d: null,
+        price_change_percentage_1y: null,
+        market_cap_change_percentage_24h: null,
+      },
+      percentages_currency: {
+        price_change_percentage_1h_in_currency: null,
+        price_change_percentage_24h_in_currency: null,
+        price_change_percentage_7d_in_currency: null,
+        price_change_percentage_14d_in_currency: null,
+        price_change_percentage_30d_in_currency: null,
+        price_change_percentage_60d_in_currency: null,
+        price_change_percentage_200d_in_currency: null,
+        price_change_percentage_1y_in_currency: null,
+        market_cap_change_percentage_24h_in_currency: null,
+      },
+      ath: {
+        btc: null,
+        eth: null,
+        usd: null,
+      },
     },
     last_updated: "",
   },
@@ -125,89 +130,130 @@ export const coinsSlice = createSlice({
       })
       .addCase(fetchCoinDetails.fulfilled, (state, action) => {
         state.loading = false;
+
         state.coin.id = action.payload.id;
+
         state.coin.symbol = action.payload.symbol;
+
         state.coin.name = action.payload.name;
+
         state.coin.web_slug = action.payload.web_slug;
+
         state.coin.categories = action.payload.categories;
+
         state.coin.localization = action.payload.localization;
+
         state.coin.description = action.payload.description;
+
         state.coin.image = action.payload.image;
+
         state.coin.market_cap_rank = action.payload.market_cap_rank;
+
         state.coin.image = action.payload.image;
+
         state.coin.market_cap_rank = action.payload.market_cap_rank;
-        state.coin.market_data.current_price =
-          action.payload.market_data.current_price;
+
         state.coin.watchlist_portfolio_users =
           action.payload.watchlist_portfolio_users;
 
         state.coin.market_data.ath = action.payload.market_data.ath;
+
+        state.coin.market_data.currencies.current_price =
+          action.payload.market_data.current_price;
+
         state.coin.market_data.ath_change_percentage =
           action.payload.market_data.ath_change_percentage;
-        state.coin.market_data.ath_date = action.payload.market_data.ath_date;
-        state.coin.market_data.atl = action.payload.market_data.atl;
+
+        state.coin.market_data.dates.ath_date =
+          action.payload.market_data.ath_date;
+
+        state.coin.market_data.currencies.atl = action.payload.market_data.atl;
+
         state.coin.market_data.atl_change_percentage =
           action.payload.market_data.atl_change_percentage;
-        state.coin.market_data.atl_date = action.payload.market_data.atl_date;
-        state.coin.market_data.market_cap =
-          action.payload.market_data.market_cap;
-        state.coin.market_data.total_volume =
-          action.payload.market_data.total_volume;
-        state.coin.market_data.high_24h = action.payload.market_data.high_24h;
-        state.coin.market_data.low_24h = action.payload.market_data.low_24h;
 
-        state.coin.market_data.price_change_24h =
+        state.coin.market_data.dates.atl_date =
+          action.payload.market_data.atl_date;
+
+        state.coin.market_data.currencies.market_cap =
+          action.payload.market_data.market_cap;
+
+        state.coin.market_data.currencies.total_volume =
+          action.payload.market_data.total_volume;
+
+        state.coin.market_data.currencies.high_24h =
+          action.payload.market_data.high_24h;
+
+        state.coin.market_data.currencies.low_24h =
+          action.payload.market_data.low_24h;
+
+        state.coin.market_data.numbers.price_change_24h =
           action.payload.market_data.price_change_24h;
-        state.coin.market_data.price_change_percentage_24h =
+
+        state.coin.market_data.percentages.price_change_percentage_24h =
           action.payload.market_data.price_change_percentage_24h;
-        state.coin.market_data.price_change_percentage_7d =
+
+        state.coin.market_data.percentages.price_change_percentage_7d =
           action.payload.market_data.price_change_percentage_7d;
-        state.coin.market_data.price_change_percentage_14d =
-          action.payload.market_data.price_change_percentage_14d;
-        state.coin.market_data.price_change_percentage_30d =
+
+        state.coin.market_data.percentages.price_change_percentage_14d =
+          action.payload.market_dataprice_change_percentage_14d;
+
+        state.coin.market_data.percentages.price_change_percentage_30d =
           action.payload.market_data.price_change_percentage_30d;
-        state.coin.market_data.price_change_percentage_60d =
+
+        state.coin.market_data.percentages.price_change_percentage_60d =
           action.payload.market_data.price_change_percentage_60d;
-        state.coin.market_data.price_change_percentage_200d =
+
+        state.coin.market_data.percentages.price_change_percentage_200d =
           action.payload.market_data.price_change_percentage_200d;
-        state.coin.market_data.price_change_percentage_1y =
+
+        state.coin.market_data.percentages.price_change_percentage_1y =
           action.payload.market_data.price_change_percentage_1y;
-        state.coin.market_data.market_cap_change_24h =
+
+        state.coin.market_data.percentages.market_cap_change_24h =
           action.payload.market_data.market_cap_change_24h;
-        state.coin.market_data.market_cap_change_percentage_24h =
+
+        state.coin.market_data.percentages.market_cap_change_percentage_24h =
           action.payload.market_data.market_cap_change_percentage_24h;
-        state.coin.market_data.price_change_24h_in_currency =
+
+        state.coin.market_data.currencies.price_change_24h_in_currency =
           action.payload.market_data.price_change_24h_in_currency;
-        state.coin.market_data.price_change_percentage_1h_in_currency =
+
+        state.coin.market_data.percentages_currency.price_change_percentage_1h_in_currency =
           action.payload.market_data.price_change_percentage_1h_in_currency;
-        state.coin.market_data.price_change_percentage_24h_in_currency =
+
+        state.coin.market_data.percentages_currency.price_change_percentage_24h_in_currency =
           action.payload.market_data.price_change_percentage_24h_in_currency;
-        state.coin.market_data.price_change_percentage_7d_in_currency =
+
+        state.coin.market_data.percentages_currency.price_change_percentage_7d_in_currency =
           action.payload.market_data.price_change_percentage_7d_in_currency;
 
-        state.coin.market_data.price_change_percentage_14d_in_currency =
+        state.coin.market_data.percentages_currency.price_change_percentage_14d_in_currency =
           action.payload.market_data.price_change_percentage_14d_in_currency;
 
-        state.coin.market_data.price_change_percentage_30d_in_currency =
+        state.coin.market_data.percentages_currency.price_change_percentage_30d_in_currency =
           action.payload.market_data.price_change_percentage_30d_in_currency;
 
-        state.coin.market_data.price_change_percentage_60d_in_currency =
+        state.coin.market_data.percentages_currency.price_change_percentage_60d_in_currency =
           action.payload.market_data.price_change_percentage_60d_in_currency;
 
-        state.coin.market_data.price_change_percentage_200d_in_currency =
+        state.coin.market_data.percentages_currency.price_change_percentage_200d_in_currency =
           action.payload.market_data.price_change_percentage_200d_in_currency;
 
-        state.coin.market_data.price_change_percentage_1y_in_currency =
+        state.coin.market_data.percentages_currency.price_change_percentage_1y_in_currency =
           action.payload.market_data.price_change_percentage_1y_in_currency;
 
-        state.coin.market_data.market_cap_change_24h_in_currency =
+        state.coin.market_data.currencies.market_cap_change_24h_in_currency =
           action.payload.market_data.market_cap_change_24h_in_currency;
 
-        state.coin.market_data.market_cap_change_percentage_24h_in_currency =
+        state.coin.market_data.percentages_currency.market_cap_change_percentage_24h_in_currency =
           action.payload.market_data.market_cap_change_percentage_24h_in_currency;
 
         state.coin.last_updated = action.payload.last_updated;
+
         state.coin.links.homepage = action.payload.links.homepage[0];
+
         state.coin.links.whitepaper = action.payload.links.whitepaper;
         state.coin.links.repos_url.github =
           action.payload.links.repos_url.github[0];
@@ -242,30 +288,6 @@ export const coinsSlice = createSlice({
         state.historyChart.errorHistoryChart =
           action.error.message || "Something went wrong";
       });
-    // .addCase(fetchCoinHistory.pending, (state) => {
-    //   state.history.loadingHistory = true;
-    //   state.history.errorHistory = null;
-    // })
-    // .addCase(fetchCoinHistory.fulfilled, (state, action) => {
-    //   state.history.loadingHistory = false;
-    //   state.history.dataHistory.id = action.payload.id;
-    //   state.history.dataHistory.symbol = action.payload.symbol;
-    //   state.history.dataHistory.name = action.payload.name;
-    //   state.history.dataHistory.localization.en =
-    //     action.payload.localization.en;
-    //   state.history.dataHistory.image.small = action.payload.image.small;
-    //   state.history.dataHistory.market_data.current_price =
-    //     action.payload.market_data.current_price;
-    //   state.history.dataHistory.market_data.market_cap =
-    //     action.payload.market_data.market_cap;
-    //   state.history.dataHistory.market_data.total_volume =
-    //     action.payload.market_data.total_volume;
-    // })
-    // .addCase(fetchCoinHistory.rejected, (state, action) => {
-    //   state.history.loadingHistory = false;
-    //   state.history.errorHistory =
-    //     action.error.message || "Something went wrong";
-    // });
   },
 });
 
@@ -296,6 +318,7 @@ export const fetchCoinDetails = createAsyncThunk<
 
 // Coin Historical Chart Data within Time Range by ID
 export const fetchCoinHistoryChart = createAsyncThunk<
+  // FIX ME
   HistoryChart,
   { id: string; days: number; currency: string },
   { rejectValue: string }

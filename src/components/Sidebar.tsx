@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { device } from "../styles/breakpoints";
-import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
 import Hamburger from "hamburger-react";
 import logo from "../assets/sumo-logo.svg";
@@ -13,19 +12,16 @@ const NavContainer = styled.aside`
   background-color: var(--card);
   padding: 2rem 1rem;
   min-width: 12rem;
-
-  @media ${device.laptop} {
-  }
 `;
 
 const Li = styled.li`
-  padding: 1rem 0rem;
+  padding: 1rem;
   margin: 0rem;
 `;
 
 const Ul = styled(motion.ul)`
   list-style: none;
-  padding: 0;
+  padding: 3rem 0rem;
   margin: 0;
 `;
 
@@ -40,7 +36,6 @@ const LinkContainer = styled.div`
 `;
 
 const HamburgerContainer = styled.button`
-  background: pink;
   display: none;
 
   @media ${device.laptop} {
@@ -54,16 +49,23 @@ const Span = styled.span`
 
 export default function Sidebar() {
   const [isOpen, setOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-    setOpen(!isOpen);
-  };
+  const [windowDimension, setWindowDimension] = useState<null | number>(null);
 
   useEffect(() => {
-    if (isMobile) setIsSidebarOpen(false);
-  }, [isMobile]);
+    setWindowDimension(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimension(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowDimension <= 640;
 
   const displayLinks = links.map((link) => (
     <Li key={link.label}>
@@ -90,12 +92,12 @@ export default function Sidebar() {
         <Link to="/">
           <Img src={logo} alt="sumo" />{" "}
         </Link>
-        <HamburgerContainer onClick={toggleSidebar}>
+        <HamburgerContainer>
           <Hamburger toggled={isOpen} toggle={setOpen} />
         </HamburgerContainer>
       </LinkContainer>
 
-      {isSidebarOpen && isMobile ? (
+      {(isOpen && isMobile) || (!isOpen && !isMobile) ? (
         <Ul
           initial={{ x: "-100%" }}
           animate={{ x: 0 }}
@@ -103,8 +105,6 @@ export default function Sidebar() {
         >
           {displayLinks}
         </Ul>
-      ) : !isMobile ? (
-        <div>{displayLinks}</div>
       ) : null}
     </NavContainer>
   );

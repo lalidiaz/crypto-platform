@@ -1,54 +1,62 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { Title } from "../components";
+import { formatCompactNumber } from "../utils/helpers";
 import {
   fetchCategories,
   categoriesSelector,
 } from "../store/slices/categories";
+import { device } from "../styles/breakpoints";
 
-const CategoriesContent = styled.div`
+const CategoriesWrapper = styled.div`
   padding: 2rem;
   overflow-y: scroll;
-  height: 100%;
+  height: 90vh;
+
+  @media ${device.laptop} {
+    padding: 0rem;
+  }
+`;
+
+const CategoriesContent = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
+
 const Card = styled.div`
-  width: 27%;
-  padding: 1rem;
+  width: 28%;
+  padding: 1rem 2rem;
   margin: 1rem;
   height: auto;
   border-radius: var(--radius);
   background: var(--card);
-  // display: grid;
-  // grid-template-columns: repeat(12, 1fr);
-  // grid-template-rows: 1fr;
 
-  // p:nth-child(1) {
-  //   font-weight: bold;
-  //   grid-column: 1/3;
-  // }
+  @media ${device.laptop} {
+    width: 100%;
+  }
+`;
 
-  // p:nth-child(2) {
-  //   grid-column: 3/5;
-  // }
-  // p:nth-child(3) {
-  //   grid-column: 5/7;
-  // }
-  // p:nth-child(4) {
-  //   grid-column: 7/9;
-  // }
+const Span = styled.span`
+  font-weight: bold;
 `;
 
 const TopCoins = styled.div`
-  grid-column: 10/13;
   display: flex;
   align-items: center;
-  justify-content: space-around;
 
   img {
     border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: 0.5rem;
   }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default function CategoriesList() {
@@ -59,20 +67,38 @@ export default function CategoriesList() {
     dispatch(fetchCategories());
   }, [categories]);
 
-  const displayCategories = categories.map((item) => (
-    <Card key={item.id}>
-      <p>{item.name}</p>
-      <p>{item.market_cap}</p>
-      <p>{item.market_cap_change_24h}</p>
-      <p>{item.volume_24h}</p>
-      <TopCoins>
-        {" "}
-        {item.top_3_coins.map((item) => (
-          <img key={item} src={item} />
-        ))}
-      </TopCoins>
-    </Card>
-  ));
+  const displayCategories = categories.map((item) => {
+    return (
+      <Card key={item.id}>
+        <p>
+          <Span>Name:</Span> {item.name}
+        </p>
+        <p>
+          <Span>Market Cap:</Span> {formatCompactNumber(item.market_cap)}
+        </p>
+        <p>
+          <Span>Market Cap Change 24h:</Span>
+          {formatCompactNumber(item.market_cap_change_24h)}
+        </p>
+        <p>
+          <Span>Volume 24h:</Span> {formatCompactNumber(item.volume_24h)}
+        </p>
+        <TopCoins>
+          <Span>Top 3 Coins:</Span>
+          {item.top_3_coins.map((item) => (
+            <img key={item} src={item} />
+          ))}
+        </TopCoins>
+      </Card>
+    );
+  });
 
-  return <CategoriesContent>{displayCategories}</CategoriesContent>;
+  return (
+    <CategoriesWrapper>
+      <TitleContainer>
+        <Title title="Categories" />
+      </TitleContainer>
+      <CategoriesContent>{displayCategories}</CategoriesContent>
+    </CategoriesWrapper>
+  );
 }

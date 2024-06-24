@@ -9,12 +9,14 @@ const TableContainer = styled.table`
 const TableRow = styled.tr``;
 
 const TH = styled.th`
-  padding: 1rem 0rem;
+  padding: 1rem;
   font-weight: normal;
   color: var(--green);
 `;
 
-const THead = styled.thead``;
+const THead = styled.thead`
+  background: var(--btn-dark-gray);
+`;
 
 const TBody = styled.tbody``;
 

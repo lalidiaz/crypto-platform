@@ -2,60 +2,68 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { coinSelector, fetchCoinDetails } from "../store/slices/coin";
 import { Title, Stats, Select, Back, Loader, Error } from "../components";
-import { formatDate, formatPercentage, formatCurrency } from "../utils/helpers";
 import { CurrencyOption } from "../types";
 import { setCurrency } from "../store/slices/coin";
 import { currencyOptions } from "../utils/constants";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useParams } from "react-router-dom";
 import { device } from "../styles/breakpoints";
+import {
+  formatDate,
+  formatPercentage,
+  formatCurrency,
+  formatCompactNumber,
+} from "../utils/helpers";
 
 const Wrapper = styled.div`
   padding: 2rem;
-  height: 90vh;
-  overflow-y: scroll;
-  border: 2px solid red;
+  height: 100vh;
+
+  @media ${device.laptop} {
+    padding: 1rem;
+  }
 `;
 
 const Container = styled.div`
   width: 100%;
-  border: 2px solid blue;
 `;
 
 const SelectContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0rem 2rem;
+  padding: 0rem;
 
   a {
     margin-right: 2rem;
   }
-`;
 
-const MarketPerformance = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: no-wrap;
-  width: 100%;
-
-  @media only screen and (min-width: 992px) {
-    flex-direction: row;
-    flex-wrap: wrap;
+  @media ${device.laptop} {
+    padding: 0rem 2rem;
   }
 `;
 
-const MarketStats = styled.div`
+const StatsContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  flex-wrap: no-wrap;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0rem;
 
-  border: 2px sold pink;
-  flex-wrap: wrap;
   flex-direction: row;
+  flex-wrap: wrap;
 
   @media ${device.laptop} {
     flex-wrap: no-wrap;
     flex-direction: column;
   }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default function MarketData() {
@@ -74,39 +82,58 @@ export default function MarketData() {
 
   const {
     market_data: {
-      ath,
-      ath_change_percentage,
-      ath_date,
-      atl,
       atl_change_percentage,
-      atl_date,
-      market_cap,
-      total_volume,
-      high_24h,
-      low_24h,
-      price_change_24h,
-      price_change_percentage_24h,
-      price_change_percentage_7d,
-      price_change_percentage_14d,
-      price_change_percentage_30d,
-      price_change_percentage_60d,
-      price_change_percentage_200d,
-      price_change_percentage_1y,
-      market_cap_change_24h,
-      market_cap_change_percentage_24h,
-      price_change_24h_in_currency,
-      price_change_percentage_1h_in_currency,
-      price_change_percentage_24h_in_currency,
-      price_change_percentage_7d_in_currency,
-      price_change_percentage_14d_in_currency,
-      price_change_percentage_30d_in_currency,
-      price_change_percentage_60d_in_currency,
-      price_change_percentage_200d_in_currency,
-      price_change_percentage_1y_in_currency,
-      market_cap_change_24h_in_currency,
-      market_cap_change_percentage_24h_in_currency,
+      ath_change_percentage,
+      currencies,
+      numbers,
+      dates,
+      percentages,
+      ath,
+      percentages_currency,
     },
   } = coin;
+
+  const displayCurrencies = Object.entries(currencies).map((item) => {
+    return (
+      item[1] && (
+        <Stats
+          name={item[0]}
+          data={formatCurrency(currency, item[1][currency.currency])}
+        />
+      )
+    );
+  });
+
+  const displayNumbers = Object.entries(numbers).map((item) => {
+    return (
+      item[1] && <Stats name={item[0]} data={formatCompactNumber(item[1])} />
+    );
+  });
+
+  const displayDates = Object.entries(dates).map((item) => {
+    return (
+      item[1] && (
+        <Stats name={item[0]} data={formatDate(item[1][currency.currency])} />
+      )
+    );
+  });
+
+  const displayPercentages = Object.entries(percentages).map((item) => {
+    return item[1] && <Stats name={item[0]} data={formatPercentage(item[1])} />;
+  });
+
+  const displayPercentagesCurrency = Object.entries(percentages_currency).map(
+    (item) => {
+      return (
+        item[1] && (
+          <Stats
+            name={item[0]}
+            data={formatPercentage(item[1][currency.currency])}
+          />
+        )
+      );
+    }
+  );
 
   if (error) {
     return <Error error={error} />;
@@ -127,240 +154,46 @@ export default function MarketData() {
                 onChange={handleCurrencyChange}
               />
             </SelectContainer>
-            <Title title="Market Data" />
-            <MarketStats>
-              {ath && <Stats name="all time high" data={ath?.btc} />}
-              {ath_change_percentage && (
+            <TitleContainer>
+              <Title title="Market Data" />
+            </TitleContainer>
+            <StatsContainer>
+              {ath && ath.usd && (
                 <Stats
-                  name="all time high change percentage"
+                  name="All Time High USD"
+                  data={formatCurrency(currency, ath.usd)}
+                />
+              )}
+              {ath.eth && (
+                <Stats
+                  name="All Time High Ethereum"
+                  data={`${formatCompactNumber(ath.eth)} ETH`}
+                />
+              )}
+
+              {atl_change_percentage && (
+                <Stats
+                  name="atl_change_percentage"
+                  data={formatPercentage(
+                    atl_change_percentage[currency.currency]
+                  )}
+                />
+              )}
+              {atl_change_percentage && (
+                <Stats
+                  name="ath_change_percentage"
                   data={formatPercentage(
                     ath_change_percentage[currency.currency]
                   )}
                 />
               )}
 
-              {ath_date && (
-                <Stats
-                  name="all time high date"
-                  data={formatDate(ath_date[currency.currency])}
-                />
-              )}
-
-              {atl && (
-                <Stats
-                  name="all time low"
-                  data={formatCurrency(currency, atl[currency.currency])}
-                />
-              )}
-
-              {atl_change_percentage && (
-                <Stats
-                  name="all time low change percentage"
-                  data={formatPercentage(
-                    atl_change_percentage[currency.currency]
-                  )}
-                />
-              )}
-
-              {atl_date && (
-                <Stats
-                  name="all time low change percentage"
-                  data={formatPercentage(atl_date[currency.currency])}
-                />
-              )}
-
-              {market_cap && (
-                <Stats
-                  name="all time low change percentage"
-                  data={formatPercentage(market_cap[currency.currency])}
-                />
-              )}
-              {total_volume && (
-                <Stats
-                  name="total volume"
-                  data={formatCurrency(
-                    currency,
-                    total_volume[currency.currency]
-                  )}
-                />
-              )}
-              {high_24h && (
-                <Stats
-                  name="high 24h"
-                  data={formatCurrency(currency, high_24h[currency.currency])}
-                />
-              )}
-              {low_24h && (
-                <Stats
-                  name="low 24h"
-                  data={formatCurrency(currency, high_24h[low_24h.currency])}
-                />
-              )}
-            </MarketStats>
-          </Container>
-
-          <Container>
-            <Title title="Market Performance" />
-            <MarketPerformance>
-              {price_change_24h && (
-                <Stats
-                  name="price change (24h)"
-                  data={formatCurrency(
-                    currency,
-                    price_change_24h[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_24h && (
-                <Stats
-                  name="price change % (7d)"
-                  data={formatPercentage(price_change_percentage_24h)}
-                />
-              )}
-              {price_change_percentage_7d && (
-                <Stats
-                  name="price change % (7d)"
-                  data={formatPercentage(price_change_percentage_7d)}
-                />
-              )}
-              {price_change_percentage_14d && (
-                <Stats
-                  name="price change % (1d)"
-                  data={formatPercentage(price_change_percentage_14d)}
-                />
-              )}
-              {price_change_percentage_30d && (
-                <Stats
-                  name="price change % (30d)"
-                  data={formatPercentage(price_change_percentage_30d)}
-                />
-              )}
-              {price_change_percentage_60d && (
-                <Stats
-                  name="price change % (60d)"
-                  data={formatPercentage(price_change_percentage_60d)}
-                />
-              )}
-              {price_change_percentage_200d && (
-                <Stats
-                  name="price change % (200d)"
-                  data={formatPercentage(price_change_percentage_200d)}
-                />
-              )}
-              {price_change_percentage_1y && (
-                <Stats
-                  name="price change % (1yr)"
-                  data={formatPercentage(price_change_percentage_1y)}
-                />
-              )}
-              {market_cap_change_24h && (
-                <Stats
-                  name="market cap change (24h)"
-                  data={formatCurrency(
-                    currency,
-                    market_cap_change_24h[currency.currency]
-                  )}
-                />
-              )}
-              {market_cap_change_percentage_24h && (
-                <Stats
-                  name="market cap percentage change (24h)"
-                  data={formatPercentage(market_cap_change_percentage_24h)}
-                />
-              )}
-              {price_change_24h_in_currency && (
-                <Stats
-                  name="price change (24h)"
-                  data={formatCurrency(
-                    currency,
-                    price_change_24h_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_1h_in_currency && (
-                <Stats
-                  name="price change %  1h"
-                  data={formatPercentage(
-                    price_change_percentage_1h_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_24h_in_currency && (
-                <Stats
-                  name="price change 24h"
-                  data={formatPercentage(
-                    price_change_percentage_24h_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_7d_in_currency && (
-                <Stats
-                  name="price change 7d"
-                  data={formatPercentage(
-                    price_change_percentage_7d_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_14d_in_currency && (
-                <Stats
-                  name="price change 14d"
-                  data={formatPercentage(
-                    price_change_percentage_14d_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_30d_in_currency && (
-                <Stats
-                  name="price change 30d"
-                  data={formatPercentage(
-                    price_change_percentage_30d_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_60d_in_currency && (
-                <Stats
-                  name="price change 60d"
-                  data={formatPercentage(
-                    price_change_percentage_60d_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_200d_in_currency && (
-                <Stats
-                  name="price change 200d"
-                  data={formatPercentage(
-                    price_change_percentage_200d_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {price_change_percentage_1y_in_currency && (
-                <Stats
-                  name="price change 1y"
-                  data={formatPercentage(
-                    price_change_percentage_1y_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {market_cap_change_24h_in_currency && (
-                <Stats
-                  name="market cap change 24h"
-                  data={formatCurrency(
-                    currency,
-                    market_cap_change_24h_in_currency[currency.currency]
-                  )}
-                />
-              )}
-              {market_cap_change_percentage_24h_in_currency && (
-                <Stats
-                  name="market cap change % 24h"
-                  data={formatPercentage(
-                    market_cap_change_percentage_24h_in_currency[
-                      currency.currency
-                    ]
-                  )}
-                />
-              )}
-            </MarketPerformance>
+              {displayCurrencies}
+              {displayNumbers}
+              {displayDates}
+              {displayPercentages}
+              {displayPercentagesCurrency}
+            </StatsContainer>
           </Container>
         </>
       )}

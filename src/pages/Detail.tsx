@@ -191,7 +191,9 @@ export default function Detail() {
       facebook_likes,
     },
     market_cap_rank,
-    market_data: { current_price },
+    market_data: {
+      currencies: { current_price },
+    },
   } = coin;
 
   const displayTags = categories.map((category) => <Tag text={category} />);
@@ -233,7 +235,8 @@ export default function Detail() {
             </RightContent>
             <LeftContainer>
               <CurrentPrice>
-                {formatCurrency(currency, current_price[currency.currency])}
+                {current_price &&
+                  formatCurrency(currency, current_price[currency.currency])}
               </CurrentPrice>
               <PorfolioUsers>
                 {formatCompactNumber(watchlist_portfolio_users)} Portfolio users

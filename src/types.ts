@@ -45,19 +45,28 @@ type Converted = {
   usd: number | null;
 };
 
-export type MarketData = {
-  current_price: CurrencyValues;
-  ath: Converted;
-  ath_change_percentage: CurrencyValues;
-  ath_date: CurrencyValues;
-  atl: CurrencyValues;
-  atl_change_percentage: CurrencyValues;
-  atl_date: CurrencyValues;
-  market_cap: CurrencyValues;
-  total_volume: CurrencyValues;
-  high_24h: CurrencyValues;
-  low_24h: CurrencyValues;
+type Dates = {
+  ath_date: CurrencyValues | null;
+  atl_date: CurrencyValues | null;
+};
+
+type Currencies = {
+  current_price: CurrencyValues | null;
+  atl: CurrencyValues | null;
+  market_cap: CurrencyValues | null;
+  total_volume: CurrencyValues | null;
+  high_24h: CurrencyValues | null;
+  low_24h: CurrencyValues | null;
+  market_cap_change_24h_in_currency: CurrencyValues | null;
+  price_change_24h_in_currency: CurrencyValues | null;
+};
+
+type Numbers = {
   price_change_24h: number | null;
+  market_cap_change_24h: number | null;
+};
+
+type Percentage = {
   price_change_percentage_24h: number | null;
   price_change_percentage_7d: number | null;
   price_change_percentage_14d: number | null;
@@ -65,19 +74,31 @@ export type MarketData = {
   price_change_percentage_60d: number | null;
   price_change_percentage_200d: number | null;
   price_change_percentage_1y: number | null;
-  market_cap_change_24h: number | null;
   market_cap_change_percentage_24h: number | null;
-  price_change_24h_in_currency: CurrencyValues;
-  price_change_percentage_1h_in_currency: CurrencyValues;
-  price_change_percentage_24h_in_currency: CurrencyValues;
-  price_change_percentage_7d_in_currency: CurrencyValues;
-  price_change_percentage_14d_in_currency: CurrencyValues;
-  price_change_percentage_30d_in_currency: CurrencyValues;
-  price_change_percentage_60d_in_currency: CurrencyValues;
-  price_change_percentage_200d_in_currency: CurrencyValues;
-  price_change_percentage_1y_in_currency: CurrencyValues;
-  market_cap_change_24h_in_currency: CurrencyValues;
-  market_cap_change_percentage_24h_in_currency: CurrencyValues;
+  l;
+};
+
+type PercentageCurrency = {
+  price_change_percentage_1h_in_currency: CurrencyValues | null;
+  price_change_percentage_24h_in_currency: CurrencyValues | null;
+  price_change_percentage_7d_in_currency: CurrencyValues | null;
+  price_change_percentage_14d_in_currency: CurrencyValues | null;
+  price_change_percentage_30d_in_currency: CurrencyValues | null;
+  price_change_percentage_60d_in_currency: CurrencyValues | null;
+  price_change_percentage_200d_in_currency: CurrencyValues | null;
+  price_change_percentage_1y_in_currency: CurrencyValues | null;
+  market_cap_change_percentage_24h_in_currency: CurrencyValues | null;
+};
+
+export type CoinMarketData = {
+  atl_change_percentage: CurrencyValues | null;
+  ath_change_percentage: CurrencyValues | null;
+  currencies: Currencies;
+  numbers: Numbers;
+  dates: Dates;
+  percentages: Percentage;
+  percentages_currency: PercentageCurrency;
+  ath: Converted;
 };
 
 type ResposURL = {
@@ -117,7 +138,7 @@ export type CoinDetails = {
   description: object;
   image: Images;
   market_cap_rank: number | null;
-  market_data: MarketData;
+  market_data: CoinMarketData;
   last_updated: string | Date;
 };
 
@@ -143,9 +164,9 @@ export type History = {
     small: string;
   };
   market_data: {
-    current_price: CurrencyValues;
-    market_cap: CurrencyValues;
-    total_volume: CurrencyValues;
+    current_price: CurrencyValues | null;
+    market_cap: CurrencyValues | null;
+    total_volume: CurrencyValues | null;
   };
 };
 
@@ -162,6 +183,4 @@ export type Category = {
 
 export interface CurrencyOption extends IOption {
   format: string;
-  label: string;
-  value: string;
 }

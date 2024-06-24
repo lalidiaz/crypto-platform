@@ -14,12 +14,14 @@ const Btn = styled.button<{ selected?: boolean }>`
     props.selected
       ? "1px solid var(--green)"
       : "1px solid var(--btn-dark-gray)"};
-  color: white;
+  color: ${(props) => (props.selected ? "var(--btn-dark-gray)" : "white")};
   padding: 0.5rem 1.5rem;
   border-radius: var(--radius);
   cursor: pointer;
 
   &:hover {
+    transition: 1s;
+    color: var(--btn-dark-gray);
     background: var(--green);
     border: 1px solid var(--green);
   }
