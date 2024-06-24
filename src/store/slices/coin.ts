@@ -318,8 +318,7 @@ export const fetchCoinDetails = createAsyncThunk<
 
 // Coin Historical Chart Data within Time Range by ID
 export const fetchCoinHistoryChart = createAsyncThunk<
-  // FIX ME
-  HistoryChart,
+  [number, number],
   { id: string; days: number; currency: string },
   { rejectValue: string }
 >(
@@ -336,12 +335,9 @@ export const fetchCoinHistoryChart = createAsyncThunk<
         },
       };
       const response = await axios(request);
-      console.log("response.data fetchCoinHistoryChart ===>", response.data);
 
       return response.data;
     } catch (error) {
-      console.log("ERROR ==-=>", error);
-
       return thunkAPI.rejectWithValue("Failed to fetch coins.");
     }
   }
