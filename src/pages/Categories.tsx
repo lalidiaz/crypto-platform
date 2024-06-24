@@ -95,7 +95,7 @@ export default function CategoriesList() {
       </Card>
     );
   });
-  console.log("loadingCategories", loadingCategories);
+
   return (
     <CategoriesWrapper>
       <TitleContainer>

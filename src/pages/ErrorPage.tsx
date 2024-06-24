@@ -14,7 +14,6 @@ const ErrorWrapper = styled.div`
 
 export default function ErrorPage() {
   const error: unknown = useRouteError();
-  console.error(error);
 
   return (
     <ErrorWrapper>

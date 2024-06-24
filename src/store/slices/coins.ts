@@ -39,7 +39,7 @@ export const coinsSlice = createSlice({
       })
       .addCase(fetchCoins.rejected, (state, action) => {
         state.loading = false;
-        console.log("action.payload", action.payload);
+
         state.error = action.error.message || "Something went wrong";
       });
   },
@@ -74,7 +74,6 @@ export const fetchCoins = createAsyncThunk<
 
       return response.data;
     } catch (error) {
-      console.log("error ===>", error);
       return thunkAPI.rejectWithValue("Failed to fetch coins.");
     }
   }
