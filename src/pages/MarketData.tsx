@@ -17,7 +17,8 @@ import {
 
 const Wrapper = styled.div`
   padding: 2rem;
-  height: 100vh;
+  height: 90vh;
+  overflow-y: scroll;
 
   @media ${device.laptop} {
     padding: 1rem;

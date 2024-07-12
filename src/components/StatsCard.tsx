@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { formatCompactNumber } from "../utils/helpers";
 import { device } from "../styles/breakpoints";
+import { Data } from "../types";
 
 const StatCardWrapper = styled.div`
   background: var(--gray-medium);
@@ -29,10 +30,13 @@ const Item = styled.div`
   margin-bottom: 1rem;
 `;
 
-type Data = {
-  name: string;
-  value: string;
-};
+const NoData = styled.div`
+  padding: 2rem 1rem;
+`;
+
+const NoDataText = styled.p`
+  color: red;
+`;
 
 type StatsCardProps = {
   data: Data[];
@@ -46,10 +50,17 @@ export default function StatsCard({ data, title }: StatsCardProps) {
       <p>{formatCompactNumber(item.value)}</p>
     </Item>
   ));
+
   return (
     <StatCardWrapper>
       <Title>{title}</Title>
-      {displayCards}
+      {data && data.length ? (
+        displayCards
+      ) : (
+        <NoData>
+          <NoDataText>No data available</NoDataText>
+        </NoData>
+      )}
     </StatCardWrapper>
   );
 }

@@ -19,7 +19,7 @@ const Name = styled.p`
 `;
 
 const Data = styled.p`
-  color: ${(props) => (props.isNegative ? "var(--red)" : "var(--green)")};
+  color: ${(props) => (props.negative ? "var(--red)" : "var(--green)")};
   text-align: right;
   padding-right: 1rem;
   font-weight: bold;
@@ -32,14 +32,14 @@ type StatsProps = {
 };
 
 export default function Stats({ name, data }: StatsProps) {
-  let isNegative = data?.toString().includes("-");
+  let negative = data && data.toString().includes("-");
 
   const formatDate = name.replace(/_/g, " ").toUpperCase();
 
   return (
     <StatsContainer>
       <Name>{formatDate}</Name>
-      <Data isNegative={isNegative}>{data}</Data>
+      <Data negative={negative}>{data}</Data>
     </StatsContainer>
   );
 }

@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-type ButtonProps = {
-  label: string;
-  onClick: () => void;
-  key?: string;
-  selected?: boolean;
-};
-
 const Btn = styled.button<{ selected?: boolean }>`
   background: ${(props) =>
     props.selected ? "var(--green)" : "var(--btn-dark-gray)"};
@@ -26,6 +19,13 @@ const Btn = styled.button<{ selected?: boolean }>`
     border: 1px solid var(--green);
   }
 `;
+
+type ButtonProps = {
+  label: string;
+  onClick: () => void;
+  key: string;
+  selected?: boolean;
+};
 
 export default function Button({ key, label, onClick, selected }: ButtonProps) {
   return (

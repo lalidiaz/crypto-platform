@@ -13,7 +13,7 @@ const Avatar = styled.img`
   padding-right: 1rem;
 `;
 
-const UserName = styled.p``;
+const UserName = styled.h6``;
 
 export default function Header() {
   return (

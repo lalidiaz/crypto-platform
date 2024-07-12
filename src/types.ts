@@ -19,12 +19,12 @@ export type Coin = {
   max_supply: number;
   ath: number;
   ath_change_percentage: number;
-  ath_date?: Date;
+  ath_date?: string;
   atl: number;
   atl_change_percentage: number;
-  atl_date?: Date;
+  atl_date?: string;
   roi: number | null;
-  last_updated?: Date;
+  last_updated?: string;
 };
 
 type Images = {
@@ -33,10 +33,10 @@ type Images = {
   large: string;
 };
 
-type CurrencyValues = {
-  aed?: string;
-  usd?: string;
-  ars?: string;
+export type CurrencyValues = {
+  aed: number;
+  usd: number;
+  ars: number;
 };
 
 type Converted = {
@@ -75,7 +75,6 @@ type Percentage = {
   price_change_percentage_200d: number | null;
   price_change_percentage_1y: number | null;
   market_cap_change_percentage_24h: number | null;
-  l;
 };
 
 type PercentageCurrency = {
@@ -102,26 +101,26 @@ export type CoinMarketData = {
 };
 
 type ResposURL = {
-  github: string;
-  bitbucket: string;
+  github: string | null;
+  bitbucket: string | null;
 };
 
 type Links = {
-  homepage: string;
-  whitepaper: string;
-  repos_url: ResposURL;
+  homepage: string | null;
+  whitepaper: string | null;
+  repos_url: ResposURL | null;
 };
 
 type DevData = {
-  forks: number | string | null;
-  stars: number | string | null;
-  subscribers: number | string | null;
+  forks: number | null;
+  stars: number | null;
+  subscribers: number | null;
 };
 
 type CommunityData = {
-  twitter_followers: number | string | null;
-  reddit_average_posts_48h: number | string | null;
-  facebook_likes: number | string | null;
+  twitter_followers: number | null;
+  reddit_average_posts_48h: number | null;
+  facebook_likes: number | null;
 };
 
 export type CoinDetails = {
@@ -139,7 +138,7 @@ export type CoinDetails = {
   image: Images;
   market_cap_rank: number | null;
   market_data: CoinMarketData;
-  last_updated: string | Date;
+  last_updated: string;
 };
 
 export type IOption = {
@@ -164,9 +163,9 @@ export type History = {
     small: string;
   };
   market_data: {
-    current_price: CurrencyValues | null;
-    market_cap: CurrencyValues | null;
-    total_volume: CurrencyValues | null;
+    current_price: CurrencyValues;
+    market_cap: CurrencyValues;
+    total_volume: CurrencyValues;
   };
 };
 
@@ -184,3 +183,8 @@ export type Category = {
 export interface CurrencyOption extends IOption {
   format: string;
 }
+
+export type Data = {
+  name: string;
+  value: number;
+};

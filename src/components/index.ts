@@ -1,7 +1,7 @@
 import Layout from "./Layout";
 import Sidebar from "./Sidebar";
 import Table from "./Table";
-import Card from "./Card";
+import CoinsRows from "./CoinsRows";
 import Pagination from "./Pagination";
 import Title from "./Title";
 import Tag from "./Tag";
@@ -20,7 +20,7 @@ export {
   Layout,
   Sidebar,
   Table,
-  Card,
+  CoinsRows,
   Pagination,
   Title,
   Tag,

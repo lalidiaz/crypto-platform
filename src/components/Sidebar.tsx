@@ -49,7 +49,6 @@ const Span = styled.span`
 
 export default function Sidebar() {
   const [isOpen, setOpen] = useState(false);
-
   const [windowDimension, setWindowDimension] = useState<null | number>(null);
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function Sidebar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const isMobile = windowDimension <= 640;
+  const isMobile = windowDimension && windowDimension <= 640;
 
   const displayLinks = links.map((link) => (
     <Li key={link.label}>
@@ -80,7 +79,7 @@ export default function Sidebar() {
           };
         }}
       >
-        <Span> {link.icon}</Span>
+        <Span>{link.icon}</Span>
         {link.label}
       </NavLink>
     </Li>

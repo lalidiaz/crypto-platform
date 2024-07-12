@@ -3,14 +3,15 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { Title, Tag, RouteLink, StatsCard, Loader, Error } from "../components";
+import { fetchCoinDetails, coinSelector } from "../store/slices/coin";
+import { device } from "../styles/breakpoints";
+import { Data } from "../types";
 import {
   formatDate,
   formatCurrency,
   createMarkup,
   formatCompactNumber,
 } from "../utils/helpers";
-import { fetchCoinDetails, coinSelector } from "../store/slices/coin";
-import { device } from "../styles/breakpoints";
 
 const PorfolioUsers = styled.div`
   color: var(--green);
@@ -198,7 +199,7 @@ export default function Detail() {
 
   const displayTags = categories.map((category) => <Tag text={category} />);
 
-  const developerData = [
+  const developerData: Data[] = [
     { name: "Forks", value: forks },
     { name: "Stars", value: stars },
     { name: "Subscribers", value: subscribers },
@@ -229,7 +230,7 @@ export default function Detail() {
                   <Symbol>{symbol.toUpperCase()}</Symbol>
                 </NameSymbol>
                 <LastUpdated>
-                  {formatDate(last_updated)} last updated
+                  {last_updated && formatDate(last_updated)} last updated
                 </LastUpdated>
               </NameContainer>
             </RightContent>
@@ -239,7 +240,9 @@ export default function Detail() {
                   formatCurrency(currency, current_price[currency.currency])}
               </CurrentPrice>
               <PorfolioUsers>
-                {formatCompactNumber(watchlist_portfolio_users)} Portfolio users
+                {watchlist_portfolio_users &&
+                  formatCompactNumber(watchlist_portfolio_users)}
+                Portfolio users
               </PorfolioUsers>
               <MarketCapRank>Rank number {market_cap_rank}</MarketCapRank>
             </LeftContainer>
@@ -254,7 +257,7 @@ export default function Detail() {
           </LinksContainer>
 
           <StatsCardContainer>
-            <StatsCard data={developerData} title="💻 Developer Data" />{" "}
+            <StatsCard data={developerData} title="💻 Developer Data" />
             <StatsCard data={communityData} title="🚀 Community Data" />
           </StatsCardContainer>
 

@@ -2,39 +2,44 @@ import styled from "styled-components";
 
 const TableContainer = styled.table`
   width: 100%;
-  text-align: right;
   border-collapse: collapse;
 `;
-
-const TableRow = styled.tr``;
 
 const TH = styled.th`
   padding: 1rem;
   font-weight: normal;
   color: var(--green);
+  text-align: left;
 `;
 
-const THead = styled.thead`
-  background: var(--btn-dark-gray);
+const THead = styled.thead``;
+
+const TR = styled.tr`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
+  grid-template-rows: 1;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  cursor: pointer;
 `;
 
 const TBody = styled.tbody``;
 
 type TableProps = {
-  data: JSX.Element[];
+  children: JSX.Element;
   tableHead: string[];
 };
 
-export default function Table({ data, tableHead }: TableProps) {
+export default function Table({ children, tableHead }: TableProps) {
   const displayTableHead = tableHead.map((th, index) => (
     <TH key={`${th}-${index}`}>{th}</TH>
   ));
   return (
     <TableContainer>
       <THead>
-        <TableRow>{displayTableHead}</TableRow>
+        <TR>{displayTableHead}</TR>
       </THead>
-      <TBody>{data}</TBody>
+      <TBody>{children}</TBody>
     </TableContainer>
   );
 }
